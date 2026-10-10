@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/base.fixture';
 import { users } from '../../utils/auth/test-data';
+import {authMessages, routes} from '../../utils/auth/expected';
 
 test.describe('Login Feature', () => {
 
@@ -17,7 +18,7 @@ test.describe('Login Feature', () => {
     });
 
     await test.step('Then user should be redirected to inventory page', async () => {
-      await expect(page).toHaveURL(/inventory/);
+      await expect(page).toHaveURL(routes.inventory);
     });
 
   });
@@ -31,7 +32,7 @@ test.describe('Login Feature', () => {
     );
 
     const error = await loginPage.getErrorMessage();
-    expect(error).toContain('Username and password do not match');
+    expect(error).toContain(authMessages.invalidCredentials);
   });
 
   test('Login Unsuccessfully: Wrong Username', async ({ loginPage }) => {
@@ -43,7 +44,7 @@ test.describe('Login Feature', () => {
     );
 
     const error = await loginPage.getErrorMessage();
-    expect(error).toContain('Username and password do not match');
+    expect(error).toContain(authMessages.invalidCredentials);
   });
 
   test('Login Unsuccessfully: Locked account', async ({ loginPage }) => {
@@ -55,7 +56,7 @@ test.describe('Login Feature', () => {
     );
 
     const error = await loginPage.getErrorMessage();
-    expect(error).toContain('Sorry, this user has been locked out.');
+    expect(error).toContain(authMessages.lockedAccount);
   });
 
   test('Login Unsuccessfully: Empty Username', async ({ loginPage }) => {
@@ -67,7 +68,7 @@ test.describe('Login Feature', () => {
     );
 
     const error = await loginPage.getErrorMessage();
-    expect(error).toContain('Username is required');
+    expect(error).toContain(authMessages.usernameRequired);
   });
 
   test('Login Unsuccessfully: Empty Password', async ({ loginPage }) => {
@@ -79,7 +80,7 @@ test.describe('Login Feature', () => {
     );
 
     const error = await loginPage.getErrorMessage();
-    expect(error).toContain('Password is required');
+    expect(error).toContain(authMessages.passwordRequired);
   });
 
 });
